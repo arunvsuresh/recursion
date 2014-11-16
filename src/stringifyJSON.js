@@ -5,57 +5,42 @@
 var stringifyJSON = function(obj) {
   // your code goes here
   
-  var JSON_string = "{";
-  // BASE CASES
-  if (Array.isArray(obj)) {
-    var resultArr = "[";
-    if (obj.length > 0) {
-      // inspect each element in array
-      for (var i = 0; i < obj.length; i++) {
-        if (obj.indexOf(obj[i]) != obj.length - 1) {
-          resultArr += stringifyJSON(obj[i]) + ",";
-        }
-        else {
-          resultArr += stringifyJSON(obj[i]);
-        }
-      }
-    }
-    return resultArr += "]";
-  }
+  var JSON_string = "";
 
-  else {
-    if (typeof obj === "string") {
-      return "\"" + obj + "\"";
+  // BASE CASES
+  if (typeof obj === "number" || typeof obj === "boolean" || obj === null) {
+    return String(obj);
+  } else if (typeof obj === "string") {
+    return "\"" + obj + "\"";
+  } else if (Array.isArray(obj)) {
+    var arrayString = "";
+    for (var i = 0; i < obj.length; i++) {
+      arrayString += stringifyJSON(obj[i]) + (i < obj.length - 1 ? ",": "");
     }
-    if (typeof obj === "number" || typeof obj === "boolean") {
-      return obj.toString();
-    }
-    
-    if (obj === null) {
-      return "null";
-    }
-    else {
-      
-      for (var key in obj) {
-        if (typeof obj[key] === "function" || typeof obj[key] === undefined) {
-          return JSON_string + "}";
-        }
-        var keys = Object.keys(obj);
-        if (keys.indexOf(key) != keys.length - 1) {
-          JSON_string += stringifyJSON(key) + ":" + stringifyJSON(obj[key]) + ",";
-        }
-        else {
-          JSON_string += stringifyJSON(key) + ":" + stringifyJSON(obj[key])
-        }
+    return "[" + arrayString + "]";
+  } else if (typeof obj === "function" || obj === undefined) {
+    return "{" + JSON_string + "}";
+  } else { // RECURSIVE CASE
+    var keys = Object.keys(obj);
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      if (typeof obj[key] === undefined || typeof obj[key] === "function") {
+        return stringifyJSON(obj[key]);
+      }
+      JSON_string += stringifyJSON(key) + ":" + stringifyJSON(obj[key]);
+      if (i < keys.length - 1) {
+         JSON_string += ",";
       }
     }
-    
   }
   
-  return JSON_string + "}";
+  return "{" + JSON_string + "}";
 };
 
-
+// var myObj = {myArr: [1, 2, 3], myStr: "string", myNum: 1};
+// debug(stringifyJSON(myObj));
+var myObj2 = {true: "string"};
+debug(stringifyJSON(myObj2));
 
 
 
