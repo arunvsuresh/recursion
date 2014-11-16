@@ -14,22 +14,19 @@ var getElementsByClassName = function(className){
   // all the elements under the class name tree
   var foundElements = [];
   
-  
   var findClass = function(element) {
-
-    if (element.classList) {
-    	for (var i = 0; i < element.classList.length; i++) {
-    		if (element.classList[i] === className) {
+    var elemList = element.classList;
+    if (elemList) {
+    	for (var i = 0; i < elemList.length; i++) {
+    		if (elemList[i] === className) {
     			foundElements.push(element);
     		}
     	}
-    	
-  	  for (var i = 0; i < element.childNodes.length; i++) {
-  	  	findClass(element.childNodes[i]);
+      var children = element.childNodes;
+  	  for (var i = 0; i < children.length; i++) {
+  	  	findClass(children[i]);
   	  }
-
   	}
-
   }
 
   findClass(body);

@@ -24,8 +24,8 @@ var stringifyJSON = function(obj) {
     var keys = Object.keys(obj);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
-      if (typeof obj[key] === undefined || typeof obj[key] === "function") {
-        return stringifyJSON(obj[key]);
+      if (typeof obj[key] === "undefined" || typeof obj[key] === "function") {
+        continue;
       }
       JSON_string += stringifyJSON(key) + ":" + stringifyJSON(obj[key]);
       if (i < keys.length - 1) {
@@ -33,14 +33,8 @@ var stringifyJSON = function(obj) {
       }
     }
   }
-  
   return "{" + JSON_string + "}";
 };
-
-// var myObj = {myArr: [1, 2, 3], myStr: "string", myNum: 1};
-// debug(stringifyJSON(myObj));
-var myObj2 = {true: "string"};
-debug(stringifyJSON(myObj2));
 
 
 
